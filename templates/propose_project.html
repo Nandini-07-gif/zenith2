@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith | Propose Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #6366f1;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid var(--border) !important;
+            color: white !important;
+            padding: 12px !important;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3) !important;
+        }
+
+        .propose-btn-huge {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: none;
+            padding: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .propose-btn-huge:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="form-container glass-card p-5 rounded-5 animate-slide-up mx-auto" style="max-width: 800px;">
+        <h1 class="display-4 fw-bold mb-3">Initialize <span style="color: var(--accent);">Deployment</span></h1>
+        <p class="text-secondary mb-5">Define the technical parameters for your new project in the <strong>{{ world_id }}</strong> ecosystem.</p>
+        
+        <form action="{{ url_for('propose_project', world_id=world_id) }}" method="POST" class="row g-4">
+            <div class="col-md-12">
+                <label class="form-label text-uppercase small fw-bold text-secondary">Project Name</label>
+                <input type="text" name="project_name" class="form-control rounded-3" placeholder="e.g., Quantum Link Core" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label text-uppercase small fw-bold text-secondary">Lead Developer</label>
+                <input type="text" name="lead" class="form-control rounded-3" value="Nandini Saraswat" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label text-uppercase small fw-bold text-secondary">Available Slots</label>
+                <input type="number" name="vacancies" class="form-control rounded-3" placeholder="3" required>
+            </div>
+            <div class="col-md-12">
+                <label class="form-label text-uppercase small fw-bold text-secondary">Technical Brief</label>
+                <textarea name="desc" class="form-control rounded-3" rows="4" placeholder="Describe the stack and goals..." required></textarea>
+            </div>
+            <div class="col-12 mt-5">
+                <button type="submit" class="propose-btn-huge w-100 text-white rounded-4">
+                    BROADCAST PROJECT TO ZENITH →
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith | {{ world_name }} Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --success: #22c55e;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 40%);
+            min-height: 100vh;
+        }
+
+        /* --- LAYOUT --- */
+        .hub-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 5px var(--accent-glow); }
+            50% { box-shadow: 0 0 25px var(--accent-glow); }
+            100% { box-shadow: 0 0 5px var(--accent-glow); }
+        }
+
+        /* --- PROJECT CARDS --- */
+        .project-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 30px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: scale(1.02) translateY(-5px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.06);
+            animation: pulse-glow 3s infinite;
+        }
+
+        .vacancy-badge {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pulse-dot {
+            height: 6px;
+            width: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* --- SIDEBAR & BUTTONS --- */
+        .sidebar-panel {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 35px;
+            position: sticky;
+            top: 40px;
+        }
+
+        .propose-btn {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: black;
+            border: none;
+            padding: 20px;
+            border-radius: 20px;
+            font-weight: 800;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            transition: 0.3s;
+        }
+
+        .propose-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .progress-bar-custom {
+            height: 6px;
+            background: var(--border);
+            border-radius: 10px;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #a855f7);
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #fff, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="hub-layout">
+        <main>
+            <header class="mb-5">
+                <nav class="small text-uppercase tracking-widest text-secondary mb-2">Network / Ecosystem</nav>
+                <h1 class="display-4 fw-800 text-gradient">{{ world_name }} Hub</h1>
+                <p class="text-secondary lead">Deploying high-impact collaborative initiatives.</p>
+            </header>
+
+            <div class="row g-3 mb-5">
+                <div class="col-4">
+                    <div class="p-4 bg-white bg-opacity-5 rounded-4 border border-secondary border-opacity-25 text-center">
+                        <div class="small text-secondary mb-1">Active Projects</div>
+                        <div class="h2 fw-800 mb-0">{{ projects|length }}</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-4 bg-white bg-opacity-5 rounded-4 border border-secondary border-opacity-25 text-center">
+                        <div class="small text-secondary mb-1">Open Roles</div>
+                        <div class="h2 fw-800 mb-0 text-success">18+</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-4 bg-white bg-opacity-5 rounded-4 border border-secondary border-opacity-25 text-center">
+                        <div class="small text-secondary mb-1">Growth Index</div>
+                        <div class="h2 fw-800 mb-0 text-primary">↑ 12%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-feed">
+                {% for project in projects %}
+                <div class="project-card">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h2 class="h3 fw-bold mb-2">{{ project.name }}</h2>
+                            <div class="vacancy-badge">
+                                <span class="pulse-dot"></span>
+                                {{ project.vacancies }} Vacancies Available
+                            </div>
+                        </div>
+                        <div class="text-end" style="width: 150px;">
+                            <div class="small text-secondary mb-1">PHASE COMPLETION</div>
+                            <div class="fw-bold small">{{ project.progress }}%</div>
+                            <div class="progress-bar-custom">
+                                <div class="progress-fill" style="width: {{ project.progress }}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-secondary mb-4">{{ project.desc }}</p>
+
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top border-secondary border-opacity-10">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: 800;">
+                                {{ project.lead[0] }}
+                            </div>
+                            <div>
+                                <div class="small fw-bold">{{ project.lead }}</div>
+                                <div class="text-muted small">{{ project.email }}</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-light rounded-pill px-4">View Specs</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+
+        <aside>
+            <div class="sidebar-panel">
+                <div class="mb-5">
+                    <h4 class="fw-800 mb-3">World Insights</h4>
+                    <p class="text-secondary small">This niche is currently trending. We recommend joining projects with >50% completion for immediate impact.</p>
+                </div>
+
+                <a href="{{ url_for('propose_project', world_id=world_id) }}">
+    <button class="propose-btn-huge">🚀 Propose New Project</button>
+</a>
+
+                <div class="quick-stats">
+                    <h6 class="small fw-bold text-secondary text-uppercase mb-3">Network Status</h6>
+                    <div class="d-flex justify-content-between small mb-2">
+                        <span>Engagement</span>
+                        <span class="text-primary">High</span>
+                    </div>
+                    <div class="d-flex justify-content-between small mb-2">
+                        <span>Peer Review</span>
+                        <span class="text-success">Active</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+</body>
+</html>

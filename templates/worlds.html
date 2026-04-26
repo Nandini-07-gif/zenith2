@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith | World Exploration</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #020202;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent-primary: #6366f1;
+            --accent-secondary: #a855f7;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Moving Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px), 
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            mask-image: radial-gradient(ellipse at center, black, transparent 80%);
+            opacity: 0.3;
+        }
+
+        /* Sidebar - Consistent with Dashboard */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            border-right: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-link { color: #64748b; transition: 0.3s; padding: 12px 20px; border-radius: 12px; }
+        .nav-link:hover, .nav-link.active { color: #fff; background: var(--glass); }
+
+        /* Dynamic World Cards */
+        .world-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .world-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--accent-primary);
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Neon Indicator */
+        .status-dot {
+            width: 8px; height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #22c55e;
+            margin-right: 8px;
+        }
+
+        /* Data Ticker */
+        .ticker-wrap {
+            background: rgba(99, 102, 241, 0.05);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+            overflow: hidden;
+        }
+
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 30s linear infinite;
+        }
+
+        .ticker-item {
+            padding: 0 40px;
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #fff, var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .enter-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: 0.3s;
+        }
+
+        .world-card:hover .enter-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">NEW PROJECT IN TECH HUB: NEURAL INTERFACE</div>
+            <div class="ticker-item">CREATIVE STUDIO: 12 NEW DESIGNERS JOINED</div>
+            <div class="ticker-item">RESEARCH LAB: QUANTUM PAPER PUBLISHED</div>
+            <div class="ticker-item">TECH HUB: HACKATHON LIVE IN 2 DAYS</div>
+            <div class="ticker-item">NEW PROJECT IN TECH HUB: NEURAL INTERFACE</div>
+            <div class="ticker-item">CREATIVE STUDIO: 12 NEW DESIGNERS JOINED</div>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <nav class="sidebar p-4 d-none d-lg-block">
+            <h3 class="fw-800 mb-5">ZENITH</h3>
+            <ul class="nav flex-column gap-2">
+                <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link">Overview</a></li>
+                <li class="nav-item"><a href="{{ url_for('worlds') }}" class="nav-link active">Worlds</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Collaborators</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Archives</a></li>
+            </ul>
+        </nav>
+
+        <main class="flex-grow-1 p-5">
+            <div class="mb-5">
+                <h1 class="display-4 fw-800"><span class="gradient-text">World</span> Directory</h1>
+                <p class="text-secondary">Hover over a sector to initialize exploration.</p>
+            </div>
+
+            <div class="row g-4">
+                {% for world in worlds %}
+                <div class="col-xl-6">
+                    <div class="world-card h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div>
+                                <h2 class="fw-800 mb-1">{{ world.title }}</h2>
+                                <span class="badge bg-dark border border-secondary text-secondary rounded-pill">
+                                    <span class="status-dot"></span> {{ world.match }} Match
+                                </span>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted d-block">ACTIVE TASKS</small>
+                                <span class="fw-bold">12</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-secondary mb-4" style="max-width: 400px;">{{ world.desc }}</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="avatar-group d-flex">
+                                <div class="rounded-circle bg-primary border border-dark" style="width: 30px; height: 30px; margin-right: -10px;"></div>
+                                <div class="rounded-circle bg-secondary border border-dark" style="width: 30px; height: 30px; margin-right: -10px;"></div>
+                                <div class="rounded-circle bg-info border border-dark" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 10px;">+8</div>
+                            </div>
+                            <a href="{{ url_for('world_projects', world_id=world.id) }}" class="enter-btn" style="text-decoration: none;">
+    Enter World →
+</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
