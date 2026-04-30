@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith | Hall of Fame</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #020203;
+            --accent-gold: #fbbf24; /* Gold for conquered peaks */
+            --accent-cyan: #00f2ff;
+            --glass: rgba(20, 20, 25, 0.7);
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- THE ARCHIVIST (Floating Engineer) --- */
+        #archivist {
+            position: fixed;
+            right: -50px;
+            bottom: -20px;
+            width: 500px;
+            height: 500px;
+            background: url('https://img.freepik.com/free-photo/view-3d-engineer-character_23-2151103901.jpg') center/cover;
+            filter: grayscale(1) brightness(0.6) drop-shadow(0 0 30px var(--accent-cyan));
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 1;
+            mask-image: linear-gradient(to top, transparent, black);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .back-btn {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            transition: 0.3s;
+        }
+        .back-btn:hover { transform: translateX(-5px); }
+
+        header {
+            border-left: 5px solid var(--accent-gold);
+            padding-left: 30px;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #fff, var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        /* --- CONQUERED PROJECT CARDS --- */
+        .archive-grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        .archive-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .archive-card:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-gold);
+            box-shadow: 0 20px 50px rgba(251, 191, 36, 0.1);
+        }
+
+        .archive-card::after {
+            content: 'CONQUERED';
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background: var(--accent-gold);
+            color: black;
+            font-weight: 900;
+            font-size: 0.6rem;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+        }
+
+        .role-tag {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .project-name {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            color: white;
+        }
+
+        .project-desc {
+            color: var(--text-dim);
+            font-size: 1rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .stats-badge {
+            text-align: right;
+        }
+
+        .xp-gain {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .date-conquered {
+            color: #555;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- MOUSE GLOW --- */
+        #cursor-glow {
+            position: fixed; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none; z-index: 2;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor-glow"></div>
+    <div id="archivist"></div>
+
+    <div class="container">
+        <a href="/dashboard" class="back-btn">
+            <i data-lucide="arrow-left" size="18"></i> Back to Dashboard
+        </a>
+
+        <header>
+            <h1>Your Archive</h1>
+            <p class="subtitle">Review the peaks you've conquered or completed.</p>
+        </header>
+
+        <div class="archive-grid">
+            <!-- Project 1 -->
+            <div class="archive-card">
+                <div>
+                    <span class="role-tag">Role: Lead Developer</span>
+                    <h2 class="project-name">Smart Campus AI</h2>
+                    <p class="project-desc">Successfully deployed AI navigation and resource management for GLA University's core infrastructure.</p>
+                </div>
+                <div class="stats-badge">
+                    <div class="xp-gain">+500 XP</div>
+                    <div class="date-conquered">Completed May 2026</div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="archive-card">
+                <div>
+                    <span class="role-tag">Role: Researcher</span>
+                    <h2 class="project-name">Quantum Ledger</h2>
+                    <p class="project-desc">Exploratory study on post-quantum cryptographic standards for decentralized collaboration.</p>
+                </div>
+                <div class="stats-badge">
+                    <div class="xp-gain">+350 XP</div>
+                    <div class="date-conquered">Completed Jan 2026</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const glow = document.getElementById('cursor-glow');
+        const archivist = document.getElementById('archivist');
+
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+
+            // Parallax the engineer
+            const x = (window.innerWidth - e.pageX * 1.5) / 90;
+            const y = (window.innerHeight - e.pageY * 1.5) / 90;
+            archivist.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    </script>
+</body>
+</html>

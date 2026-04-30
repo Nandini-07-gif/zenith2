@@ -3,178 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenith | Login</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-
+    <title>Zenith | Authentication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --bg: #030303;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #6366f1; /* Indigo glow */
+            --bg: #020203;
+            --accent-primary: #00f2ff;
+            --accent-secondary: #7000ff;
+            /* Switched to pure white for maximum readability */
+            --text-main: #ffffff; 
+            --text-dim: #cbd5e1; /* Lighter slate for better contrast */
+            --glass-bg: rgba(10, 10, 12, 0.9);
+            --input-bg: rgba(255, 255, 255, 0.05);
         }
 
-        body {
-            background-color: var(--bg);
-            /* Subtle background glow to match the dashboard */
-            background-image: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
-            color: #ffffff;
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
+            color: var(--text-main);
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* The Login Card */
+        /* --- BACKGROUND STICKERS (Reduced Opacity for Text Clarity) --- */
+        .sticker-field {
+            position: fixed; inset: 0; z-index: 1; pointer-events: none;
+        }
+
+        .sticker {
+            position: absolute;
+            animation: pop-float 15s infinite ease-in-out;
+            opacity: 0.3; /* Lowered so background doesn't fight the text */
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        @keyframes pop-float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate(30px, -40px) rotate(15deg) scale(1.1); }
+        }
+
+        /* --- LOGIN CARD --- */
         .login-card {
-            width: 100%;
-            max-width: 420px;
-            padding: 40px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 32px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative; z-index: 10;
+            width: 90%; max-width: 440px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            padding: 60px 45px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
             text-align: center;
         }
 
-        .brand-logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+        /* Vivid Title with Glow */
+        h1 {
+            font-size: 2.5rem; 
+            font-weight: 800; 
+            letter-spacing: 4px;
+            margin: 0 0 12px 0; 
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            background: linear-gradient(to bottom, #fff, #bbb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle { 
+            color: var(--text-dim); 
+            font-size: 1rem; 
+            margin-bottom: 45px; 
+            font-weight: 500;
+        }
+
+        /* --- HIGH VISIBILITY FORM --- */
+        .form-group { text-align: left; margin-bottom: 28px; }
+
+        label {
+            display: block; 
+            font-size: 0.85rem; 
             font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-            display: block;
+            text-transform: uppercase; 
+            color: var(--accent-primary); /* Use accent color for labels */
+            letter-spacing: 2px; 
+            margin-bottom: 12px;
         }
 
-        .subtitle {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin-bottom: 35px;
+        input[type="text"], input[type="password"] {
+            width: 100%; 
+            background: var(--input-bg);
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Thicker border */
+            padding: 18px 22px; 
+            border-radius: 16px;
+            color: white; 
+            font-size: 1.1rem; 
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
-        /* Form Inputs */
-        .form-label {
-            display: block;
-            text-align: left;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #64748b;
-            margin-bottom: 8px;
-            padding-left: 5px;
+        input:focus {
+            outline: none; 
+            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.15);
+        }
+
+        /* Placeholder Visibility */
+        ::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+        .options-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.95rem; margin-bottom: 40px; color: var(--text-main);
+        }
+
+        .forgot-link { 
+            color: var(--accent-primary); 
+            text-decoration: none; 
+            font-weight: 700; 
+            transition: 0.3s;
+        }
+        .forgot-link:hover { text-shadow: 0 0 10px var(--accent-primary); }
+
+        /* Powerful Button */
+        .btn-sign-in {
+            width: 100%; 
+            background: #ffffff; 
+            color: #000;
+            padding: 20px; 
+            border: none; 
+            border-radius: 16px;
+            font-weight: 800; 
+            font-size: 1.1rem; 
+            cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .input-group-custom {
-            margin-bottom: 20px;
+        .btn-sign-in:hover {
+            transform: translateY(-3px);
+            background: var(--accent-primary);
+            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.3);
         }
 
-        .form-control {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px 20px;
-            color: white;
-            transition: 0.3s;
+        .footer-link { 
+            margin-top: 35px; 
+            font-size: 1rem; 
+            color: var(--text-dim); 
+        }
+        .footer-link a { 
+            color: white; 
+            text-decoration: underline; 
+            text-underline-offset: 4px;
+            font-weight: 800; 
         }
 
-        .form-control:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-            color: white;
-            outline: none;
-        }
-
-        /* Login Button */
-        .btn-login {
-            width: 100%;
-            padding: 14px;
-            margin-top: 10px;
-            background: #ffffff;
-            color: #000;
-            border: none;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
-            background: #f8fafc;
-        }
-
-        /* Secondary Links */
-        .footer-links {
-            margin-top: 25px;
-            font-size: 0.85rem;
-            color: #64748b;
-        }
-
-        .footer-links a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Decorative "aura" circle */
-        .aura {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: var(--accent);
-            filter: blur(120px);
-            opacity: 0.1;
-            z-index: -1;
-            border-radius: 50%;
+        /* Mouse Glow */
+        #cursor-glow {
+            position: fixed; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(112, 0, 255, 0.12) 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none; z-index: 2;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
 
-    <div class="aura"></div>
+    <div id="cursor-glow"></div>
+    <div class="sticker-field" id="field"></div>
 
     <div class="login-card">
-        <span class="brand-logo">ZENITH</span>
-        <p class="subtitle">Enter your credentials to continue your journey.</p>
+        <h1>Zenith</h1>
+        <p class="subtitle">Continue your elite journey.</p>
 
-        <form action="{{ url_for('login') }}" method="POST">
-            <div class="input-group-custom">
-                <label class="form-label">College Email</label>
-                <input type="email" name="email" class="form-control" placeholder="nandini@university.edu" required>
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label>College Email</label>
+                <input type="text" name="email" placeholder="name@gla.ac.in" required>
             </div>
 
-            <div class="input-group-custom">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="••••••••" required>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember">
-                    <label class="form-check-label small text-secondary" for="remember">Remember me</label>
-                </div>
-                <a href="#" class="small text-decoration-none" style="color: var(--accent)">Forgot?</a>
+            <div class="options-row">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" style="accent-color: var(--accent-primary); width: 18px; height: 18px;"> 
+                    Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot Password?</a>
             </div>
 
-            <button type="submit" class="btn-login">Sign In</button>
+            <button type="submit" class="btn-sign-in">Authenticate</button>
         </form>
 
-        <div class="footer-links">
-            Don't have an account? <a href="{{ url_for('register') }}">Join Zenith</a>
-        </div>
+        <p class="footer-link">New to the network? <a href="#">Join Zenith</a></p>
     </div>
 
+    <script>
+        const field = document.getElementById('field');
+        const icons = ['shield-check', 'fingerprint', 'key-round', 'scan-eye', 'cpu', 'zap'];
+        const colors = ['#00f2ff', '#7000ff', '#ffffff'];
+
+        for (let i = 0; i < 15; i++) {
+            const div = document.createElement('div');
+            div.className = 'sticker';
+            div.style.left = Math.random() * 95 + '%';
+            div.style.top = Math.random() * 95 + '%';
+            div.style.color = colors[Math.floor(Math.random() * colors.length)];
+            div.style.animationDelay = (Math.random() * 5) + 's';
+            div.innerHTML = `<i data-lucide="${icons[Math.floor(Math.random() * icons.length)]}" size="${30 + Math.random() * 20}"></i>`;
+            field.appendChild(div);
+        }
+        lucide.createIcons();
+
+        const glow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+    </script>
 </body>
 </html>

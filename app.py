@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for , session
 
 app = Flask(__name__)
 
@@ -157,5 +157,54 @@ def dashboard():
         unread_count=unread_count,
     )
 
+
+
+@app.route('/archive')
+def archive():
+    # Keep the logic below, but remove the 'if' check above
+    archived_data = [
+        {
+            "title": "Smart Campus AI",
+            "role": "Lead Developer",
+            "description": "Successfully deployed AI navigation for GLA University."
+        }
+    ]
+    return render_template('archive.html', archived_projects=archived_data)
+
+@app.route('/collaborators')
+def collaborators():
+    # 1. Security Check
+    
+
+    # 2. Mock Data for Collaborators (Connect these to your DB later)
+    total_collabs = 14
+    active_squads = 3
+    
+    # 3. AI Suggestions logic
+    suggestions = [
+        {
+            "name": "Aryan Sharma",
+            "headline": "AI/ML Researcher @ GLA",
+            "skills": ["Python", "TensorFlow", "FastAPI"],
+            "match": "94%"
+        },
+        {
+            "name": "Isha Verma",
+            "headline": "UI/UX Designer",
+            "skills": ["Figma", "Three.js", "Adobe XD"],
+            "match": "88%"
+        },
+        {
+            "name": "Kabir Das",
+            "headline": "Full Stack Dev",
+            "skills": ["Node.js", "MongoDB", "React"],
+            "match": "82%"
+        }
+    ]
+
+    return render_template('collaborators.html', 
+                           total_collaborators=total_collabs, 
+                           active_squads=active_squads,
+                           suggestions=suggestions)
 if __name__ == '__main__':
     app.run(debug=True)

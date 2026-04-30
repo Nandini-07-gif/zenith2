@@ -153,8 +153,14 @@
             <ul class="nav flex-column gap-2">
                 <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link">Overview</a></li>
                 <li class="nav-item"><a href="{{ url_for('worlds') }}" class="nav-link active">Worlds</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Collaborators</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Archives</a></li>
+                <!-- Locate the Collaborators tab and change href -->
+<li class="nav-item">
+    <a href="{{ url_for('collaborators') }}" class="nav-link">Collaborators</a>
+</li>
+                <!-- CURRENT BROKEN CODE --><!-- FIXED CODE -->
+<li class="nav-item">
+    <a href="{{ url_for('archive') }}" class="nav-link">Archives</a>
+</li>
             </ul>
         </nav>
 
