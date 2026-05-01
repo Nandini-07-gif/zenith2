@@ -206,5 +206,30 @@ def collaborators():
                            total_collaborators=total_collabs, 
                            active_squads=active_squads,
                            suggestions=suggestions)
+
+# At the top of your app.py, make sure you have a list to store projects
+projects_db = [] 
+
+@app.route('/propose_project', methods=['GET', 'POST'])
+def propose_project_page():
+    if request.method == 'POST':
+        # Get data from the form
+        new_project = {
+            "title": request.form.get('title'),
+            "desc": request.form.get('description'),
+            "xp": request.form.get('xp'),
+            "world": request.form.get('world'),
+            "author": "Nandini Saraswat", # Default lead
+            "progress": 0
+        }
+        projects_db.append(new_project)
+        return redirect(url_for('index')) # Redirect back to dashboard
+    
+    return render_template('propose_project.html')
+
+@app.route('/index.html')
+def home():
+    return render_template('index.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,103 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenith | Propose Project</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Zenith | Propose Initiative</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --bg: #050505;
-            --accent: #6366f1;
+            --bg: #020203;
+            --accent: #00f2ff;
+            --purple: #7000ff;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.1);
+            --success: #00ff88;
         }
 
         body {
             background-color: var(--bg);
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 40%);
-            min-height: 100vh;
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
+            justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
 
-        .glass-card {
+        /* Ambient Background Glow */
+        .glow-sphere {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(112, 0, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+            filter: blur(50px);
+            animation: float 10s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -20px); }
+        }
+
+        .proposal-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 550px;
             background: var(--glass);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(30px);
             border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
-        .animate-slide-up {
-            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+        p.desc { color: #94a3b8; margin-bottom: 35px; font-size: 0.95rem; }
+
+        .form-group { margin-bottom: 22px; text-align: left; }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            opacity: 0.8;
         }
 
-        .form-control {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid var(--border) !important;
-            color: white !important;
-            padding: 12px !important;
+        input, textarea, select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 14px;
+            color: white;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            box-sizing: border-box;
         }
 
-        .form-control:focus {
-            border-color: var(--accent) !important;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3) !important;
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        .propose-btn-huge {
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+        .btn-launch {
+            width: 100%;
+            background: white;
+            color: black;
             border: none;
             padding: 18px;
+            border-radius: 14px;
             font-weight: 800;
-            letter-spacing: 1px;
-            transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-decoration: none;
         }
 
-        .propose-btn-huge:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+        .btn-launch:hover {
+            transform: translateY(-2px);
+            background: var(--accent);
+            box-shadow: 0 15px 30px rgba(0, 242, 255, 0.2);
         }
+
+        /* Success Message Box Styles */
+        #success-box {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 450px;
+            text-align: center;
+            z-index: 20;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--success);
+            border-radius: 24px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.1);
+        }
+
+        #success-box i { color: var(--success); margin-bottom: 20px; }
+        #success-box h2 { margin: 10px 0; font-weight: 800; font-size: 1.5rem; }
+        #success-box p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 30px; line-height: 1.5; }
+
+        .hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #555;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+        .back-link:hover { color: white; }
     </style>
 </head>
 <body>
 
-<div class="container py-5">
-    <div class="form-container glass-card p-5 rounded-5 animate-slide-up mx-auto" style="max-width: 800px;">
-        <h1 class="display-4 fw-bold mb-3">Initialize <span style="color: var(--accent);">Deployment</span></h1>
-        <p class="text-secondary mb-5">Define the technical parameters for your new project in the <strong>{{ world_id }}</strong> ecosystem.</p>
-        
-        <form action="{{ url_for('propose_project', world_id=world_id) }}" method="POST" class="row g-4">
-            <div class="col-md-12">
-                <label class="form-label text-uppercase small fw-bold text-secondary">Project Name</label>
-                <input type="text" name="project_name" class="form-control rounded-3" placeholder="e.g., Quantum Link Core" required>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label text-uppercase small fw-bold text-secondary">Lead Developer</label>
-                <input type="text" name="lead" class="form-control rounded-3" value="Nandini Saraswat" readonly>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label text-uppercase small fw-bold text-secondary">Available Slots</label>
-                <input type="number" name="vacancies" class="form-control rounded-3" placeholder="3" required>
-            </div>
-            <div class="col-md-12">
-                <label class="form-label text-uppercase small fw-bold text-secondary">Technical Brief</label>
-                <textarea name="desc" class="form-control rounded-3" rows="4" placeholder="Describe the stack and goals..." required></textarea>
-            </div>
-            <div class="col-12 mt-5">
-                <button type="submit" class="propose-btn-huge w-100 text-white rounded-4">
-                    BROADCAST PROJECT TO ZENITH →
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
+    <div class="glow-sphere"></div>
 
+    <!-- Main Container -->
+    <div class="proposal-container" id="main-form">
+        <h1>New Initiative</h1>
+        <p class="desc">Define the vision, recruit the best, change the ecosystem.</p>
+
+        <form id="initiative-form">
+            <div class="form-group">
+                <label>Initiative Title</label>
+                <input type="text" id="title" placeholder="e.g., Aashayein Media Hard Launch" required>
+            </div>
+
+            <div class="form-group">
+                <label>Vision Statement</label>
+                <textarea id="desc" rows="3" placeholder="What impact will this create?" required></textarea>
+            </div>
+
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label>XP Goal</label>
+                    <input type="number" placeholder="500">
+                </div>
+                <div>
+                    <label>Priority Level</label>
+                    <select style="appearance: none;">
+                        <option>Strategic</option>
+                        <option>Creative</option>
+                        <option>Technical</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-launch">
+                Launch Initiative <i data-lucide="zap"></i>
+            </button>
+        </form>
+
+        <a href="index.html" class="back-link">← Return to Dashboard</a>
+    </div>
+
+    <!-- Success Message Box -->
+    <div id="success-box">
+        <i data-lucide="check-circle" size="48"></i>
+        <h2>Initiative Live</h2>
+        <p>The vision is locked. Recruitment signals are active across the network.</p>
+        <!-- This button now redirects to index.html -->
+        <a href="index.html" class="btn-launch" style="background: var(--success); font-size: 0.95rem;">
+            Continue
+        </a>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const form = document.getElementById('initiative-form');
+        const mainForm = document.getElementById('main-form');
+        const successBox = document.getElementById('success-box');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Hide form with scale effect
+            mainForm.classList.add('hidden');
+            
+            setTimeout(() => {
+                successBox.style.display = 'block';
+                // Trigger animation
+                successBox.animate([
+                    { opacity: 0, transform: 'translate(-50%, -45%) scale(0.9)' },
+                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }
+                ], {
+                    duration: 400,
+                    easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                });
+            }, 400);
+        });
+    </script>
 </body>
 </html>
