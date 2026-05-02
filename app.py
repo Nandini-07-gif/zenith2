@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for , session
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key_here' # Add this line
 
 @app.route('/')
 def index():
@@ -30,12 +31,122 @@ def propose_project(world_id):
         # Logic to handle the form data would go here
         return redirect(url_for('world_projects', world_id=world_id))
     return render_template('propose_project.html', world_id=world_id)
+
 # MISSING REGISTER ROUTE: Add this to fix the BuildError
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        return redirect(url_for('dashboard'))
+        # 1. Collect data from the Register form
+        email = request.form.get('email')
+        name = request.form.get('name')
+        password = request.form.get('password')
+       
+        # 2. Save user to MongoDB (initial record)
+        # Assuming you use mongo.db.users.insert_one({...})
+       
+        # 3. Store email in session to identify the user on the next page
+        session['user_email'] = email
+       
+        # 4. REDIRECT to the niche page automatically
+        return redirect(url_for('select_niche'))
+       
     return render_template('register.html')
+
+@app.route('/niche')
+def select_niche():
+    # This renders the new dynamic niche page you created
+    return render_template('niche.html')
+
+# 1. The Niche Selection Handler
+@app.route('/save_niche', methods=['POST'])
+def save_niche():
+    selected = request.form.get('selected_niche')
+    session['user_niche'] = selected  # Store selection in session
+   
+    # Map the display name to a clean URL slug
+    niche_slugs = {
+        "Web Development": "web-dev",
+        "AI/ML": "ai-ml",
+        "Cloud Computing": "cloud",
+        "UI/UX Design": "design"
+    }
+   
+    slug = niche_slugs.get(selected, "general")
+    return redirect(url_for('project_hub', niche_slug=slug))
+
+@app.route('/projects/<niche_slug>')
+def project_hub(niche_slug):
+    # Mapping slugs to display names and colors
+    niche_configs = {
+        "web-dev": {"name": "Web Development", "color": "#6366f1"},
+        "ai-ml": {"name": "AI/ML", "color": "#a855f7"},
+        "cloud": {"name": "Cloud Computing", "color": "#00d2ff"},
+        "design": {"name": "UI/UX Design", "color": "#f43f5e"}
+    }
+   
+    config = niche_configs.get(niche_slug, {"name": "General", "color": "#ffffff"})
+   
+    # Example Project Data (In a real app, fetch these from MongoDB)
+    # This aligns with your AI Interviewer and Neural Interface projects
+    all_projects = [
+        {
+            "name": "AI Interviewer",
+            "description": "Utilizing Groq API and MongoDB to automate student vetting.",
+            "niche": "ai-ml",
+            "slots": 2,
+            "duration": "4 Weeks",
+            "status": "Active Mission"
+        },
+        {
+            "name": "Neural Interface UI",
+            "description": "Building high-fidelity collaboration dashboards for task coordination.",
+            "niche": "web-dev",
+            "slots": 3,
+            "duration": "2 Weeks",
+            "status": "Design Phase"
+        },
+        {
+            "name": "Azure Scalability Lab",
+            "description": "Testing VMSS and Availability Sets for high-load coordination.",
+            "niche": "cloud",
+            "slots": 5,
+            "duration": "1 Week",
+            "status": "Experimental"
+        }
+    ]
+   
+    # Filter projects based on the current niche
+    filtered_projects = [p for p in all_projects if p['niche'] == niche_slug]
+   
+    return render_template('projects.html',
+                           niche_name=config['name'],
+                           niche_color=config['color'],
+                           projects=filtered_projects)
+@app.route('/propose-project')
+def propose_projects():
+    # This renders the 'Tech Hub' page from your second picture
+    return render_template('propose_project.html')
+
+@app.route('/project/<project_id>')
+def project_detail(project_id):
+    # In a real app, you would do: project = mongo.db.projects.find_one({"_id": ObjectId(project_id)})
+    # For now, here is a placeholder based on your UI:
+    project = {
+        "title": "Neural Interface UI",
+        "overview": "Building high-fidelity collaboration dashboards for task coordination.",
+        "leader_name": "Kavyansh Kulshrestha", # From your project leads
+        "leader_email": "lead@university.edu",
+        "members": ["Etiksha Jain", "Prince Yadav", "Shiva Dixit"],
+        "vacancies": 3,
+        "progress": 45,
+        "phase": "Design Phase"
+    }
+    return render_template('project_overview.html', project=project)
+
+@app.route('/join_project/<project_id>', methods=['POST'])
+def join_project(project_id):
+    # Perform your database logic here (e.g., adding user to request list)
+    return {'status': 'success'}, 200
 
 @app.route('/world/<world_id>')
 def world_projects(world_id):

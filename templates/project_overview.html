@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith | Project Intelligence</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #030303;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #6366f1; 
+            --accent-2: #a855f7; 
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.12) 0%, transparent 40%);
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            padding: 60px 20px;
+        }
+
+        .overview-card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        .phase-badge {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .project-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Leader Info Box */
+        .info-panel {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            height: 100%;
+        }
+
+        .member-chip {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 12px;
+            margin: 0 8px 8px 0;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+        }
+
+        /* Progress Bar Styling */
+        .custom-progress-container {
+            background: rgba(255, 255, 255, 0.05);
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .custom-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        .btn-join {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-2));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 40px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-join:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overview-card">
+        <span class="phase-badge">{{ project.phase }}</span>
+        <h1 class="project-title">{{ project.title }}</h1>
+        <p class="lead text-secondary mb-5">{{ project.overview }}</p>
+
+        <div class="row g-4">
+            <!-- Left Side: Leadership & Vacancies -->
+            <div class="col-md-6">
+                <div class="info-panel">
+                    <span class="section-label">Project Intelligence</span>
+                    <p class="mb-1 text-secondary small">Lead Architect</p>
+                    <h5 class="mb-3">{{ project.leader_name }}</h5>
+                    
+                    <p class="mb-1 text-secondary small">Contact Portal</p>
+                    <h6 class="mb-4 text-info" style="opacity: 0.8;">{{ project.leader_email }}</h6>
+                    
+                    <hr style="border-color: var(--border);">
+                    
+                    <span class="section-label">Collaboration Slots</span>
+                    <h3 class="text-white">{{ project.vacancies }} <span class="text-secondary" style="font-size: 1rem;">Vacancies Available</span></h3>
+                </div>
+            </div>
+
+            <!-- Right Side: Team & Progress -->
+            <div class="col-md-6">
+                <div class="info-panel">
+                    <span class="section-label">Current Squad</span>
+                    <div class="mb-4">
+                        {% for member in project.members %}
+                            <div class="member-chip">{{ member }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <span class="section-label">System Development Progress</span>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small text-secondary">Operational Readiness</span>
+                        <span class="small fw-bold">{{ project.progress }}%</span>
+                    </div>
+                    <div class="custom-progress-container">
+                        <div class="custom-progress-fill" style="width: {{ project.progress }}%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Action Button -->
+        <!-- Replace the previous form/button with this -->
+<div id="statusBanner" style="display: none;" class="alert alert-dismissible fade show mb-4" role="alert">
+    <div style="background: rgba(99, 102, 241, 0.1); 
+                border: 1px solid var(--accent); 
+                color: white; 
+                backdrop-filter: blur(10px); 
+                border-radius: 16px;
+                padding: 15px;">
+        <strong style="color: var(--accent);">Transmission Successful:</strong> 
+        Your request has been sent to the project lead. Redirecting to Tech Hub...
+    </div>
+</div>
+
+<button type="button" onclick="sendRequest()" class="btn-join" id="joinBtn">
+    Transmit Join Request →
+</button>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('worlds') }}" class="text-secondary small text-decoration-none">← Return to Tech Hub</a>
+        </div>
+    </div>
+<script>
+function sendRequest() {
+    const btn = document.getElementById('joinBtn');
+    const banner = document.getElementById('statusBanner');
+
+    // 1. Disable button to prevent multiple clicks
+    btn.disabled = true;
+    btn.innerText = "Transmitting...";
+
+    // 2. Show the beautiful banner
+    banner.style.display = 'block';
+
+    // 3. Optional: Send data to Flask via fetch if you want to save to DB
+    // fetch('/join_project/{{ project_id }}', { method: 'POST' });
+
+    // 4. Redirect to home page after 3 seconds
+    setTimeout(function() {
+        window.location.href = "{{ url_for('index') }}";
+    }, 3000);
+}
+</script>
+</body>
+</html>

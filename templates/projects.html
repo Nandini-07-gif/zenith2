@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith | {{ niche_name }} Projects</title>
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #020202;
+            --accent: {{ niche_color|default('#6366f1') }}; /* Dynamic color */
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating Background Stickers */
+        .floating-stickers {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .sticker {
+            position: absolute;
+            opacity: 0;
+            animation: floatUp 12s infinite linear;
+            color: var(--accent);
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.2; }
+            80% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 10;
+            padding: 80px 0;
+        }
+
+        .header-box {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header-box h1 {
+            font-weight: 900;
+            font-size: 3.5rem;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+        }
+
+        .header-box span {
+            color: var(--accent);
+            text-shadow: 0 0 30px rgba(var(--accent-rgb), 0.3);
+        }
+
+        /* Create Your Own Project Card */
+        .create-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 2px dashed var(--border);
+            border-radius: 28px;
+            padding: 40px;
+            text-align: center;
+            transition: 0.4s;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .create-card:hover {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .create-card i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        /* Project Cards */
+        .project-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 35px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(15px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(var(--accent-rgb), 0.1);
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            text-transform: uppercase;
+            width: fit-content;
+            margin-bottom: 20px;
+        }
+
+        .project-card h3 {
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .project-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .btn-join {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 800;
+            margin-top: auto;
+            transition: 0.3s;
+        }
+
+        .btn-join:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 0 20px var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="floating-stickers" id="stickerContainer"></div>
+
+    <div class="container main-content">
+        <div class="header-box">
+            <div class="status-badge" style="margin: 0 auto 20px;">Mission Hub</div>
+            <h1>The <span>{{ niche_name }}</span> World</h1>
+            <p class="text-muted">Select an active mission or initialize your own project.</p>
+        </div>
+
+        <!-- Start Your Own Card -->
+<a href="{{ url_for('propose_projects') }}" class="text-decoration-none">
+    <div class="glass-card start-card d-flex flex-column align-items-center justify-content-center p-5 text-center h-100" 
+         style="border: 2px dashed #6366f1; border-radius: 24px; cursor: pointer; transition: transform 0.3s ease;">
+        
+        <div class="plus-icon mb-4" style="background: #6366f1; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-plus text-white"></i>
+        </div>
+        
+        <h3 class="fw-bold text-white mb-2">Start Your Own</h3>
+        <p class="text-secondary small">Create a new workspace and recruit members for your project.</p>
+    </div>
+</a>
+
+<style>
+    .start-card:hover {
+        transform: translateY(-10px);
+        background: rgba(99, 102, 241, 0.05);
+    }
+</style>
+
+            <!-- List of Dynamic Projects -->
+            {% for project in projects %}
+            <div class="col-lg-4 col-md-6">
+                <div class="project-card">
+                    <div class="status-badge">{{ project.status }}</div>
+                    <h3>{{ project.name }}</h3>
+                    <p>{{ project.description }}</p>
+                   
+                    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+                        <small class="text-muted"><i class="fa-solid fa-users me-2"></i>{{ project.slots }} Slots left</small>
+                        <small class="text-muted"><i class="fa-solid fa-clock me-2"></i>{{ project.duration }}</small>
+                    </div>
+
+                    <!-- Inside your project card -->
+<a href="{{ url_for('project_detail', project_id='neural-ui-01') }}" class="btn btn-primary w-100">
+    Join Project →
+</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Sticker Logic - Customized per niche
+        const stickerContainer = document.getElementById('stickerContainer');
+        const nicheIcons = {
+            "AI/ML": ['fa-brain', 'fa-microchip', 'fa-atom'],
+            "Web Development": ['fa-code', 'fa-layer-group', 'fa-terminal'],
+            "Cloud Computing": ['fa-cloud', 'fa-server', 'fa-database'],
+            "UI/UX Design": ['fa-wand-magic-sparkles', 'fa-palette', 'fa-bezier-curve']
+        };
+
+        const currentNiche = "{{ niche_name }}";
+        const icons = nicheIcons[currentNiche] || ['fa-rocket', 'fa-circle-nodes'];
+
+        function createSticker() {
+            const sticker = document.createElement('i');
+            const icon = icons[Math.floor(Math.random() * icons.length)];
+           
+            sticker.className = `fa-solid ${icon} sticker`;
+            sticker.style.left = Math.random() * 100 + 'vw';
+            sticker.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            sticker.style.animationDuration = (Math.random() * 5 + 10) + 's';
+           
+            stickerContainer.appendChild(sticker);
+            setTimeout(() => { sticker.remove(); }, 12000);
+        }
+
+        setInterval(createSticker, 1500);
+    </script>
+</body>
+</html>

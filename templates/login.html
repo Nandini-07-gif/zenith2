@@ -12,7 +12,7 @@
             --accent-primary: #00f2ff;
             --accent-secondary: #7000ff;
             /* Switched to pure white for maximum readability */
-            --text-main: #ffffff; 
+            --text-main: #ffffff;
             --text-dim: #cbd5e1; /* Lighter slate for better contrast */
             --glass-bg: rgba(10, 10, 12, 0.9);
             --input-bg: rgba(255, 255, 255, 0.05);
@@ -60,10 +60,10 @@
 
         /* Vivid Title with Glow */
         h1 {
-            font-size: 2.5rem; 
-            font-weight: 800; 
+            font-size: 2.5rem;
+            font-weight: 800;
             letter-spacing: 4px;
-            margin: 0 0 12px 0; 
+            margin: 0 0 12px 0;
             text-transform: uppercase;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
             background: linear-gradient(to bottom, #fff, #bbb);
@@ -71,10 +71,10 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .subtitle { 
-            color: var(--text-dim); 
-            font-size: 1rem; 
-            margin-bottom: 45px; 
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1rem;
+            margin-bottom: 45px;
             font-weight: 500;
         }
 
@@ -82,29 +82,29 @@
         .form-group { text-align: left; margin-bottom: 28px; }
 
         label {
-            display: block; 
-            font-size: 0.85rem; 
+            display: block;
+            font-size: 0.85rem;
             font-weight: 700;
-            text-transform: uppercase; 
+            text-transform: uppercase;
             color: var(--accent-primary); /* Use accent color for labels */
-            letter-spacing: 2px; 
+            letter-spacing: 2px;
             margin-bottom: 12px;
         }
 
         input[type="text"], input[type="password"] {
-            width: 100%; 
+            width: 100%;
             background: var(--input-bg);
             border: 2px solid rgba(255, 255, 255, 0.1); /* Thicker border */
-            padding: 18px 22px; 
+            padding: 18px 22px;
             border-radius: 16px;
-            color: white; 
-            font-size: 1.1rem; 
+            color: white;
+            font-size: 1.1rem;
             font-weight: 500;
             transition: all 0.3s ease;
         }
 
         input:focus {
-            outline: none; 
+            outline: none;
             border-color: var(--accent-primary);
             background: rgba(255, 255, 255, 0.08);
             box-shadow: 0 0 25px rgba(0, 242, 255, 0.15);
@@ -118,24 +118,24 @@
             font-size: 0.95rem; margin-bottom: 40px; color: var(--text-main);
         }
 
-        .forgot-link { 
-            color: var(--accent-primary); 
-            text-decoration: none; 
-            font-weight: 700; 
+        .forgot-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 700;
             transition: 0.3s;
         }
         .forgot-link:hover { text-shadow: 0 0 10px var(--accent-primary); }
 
         /* Powerful Button */
         .btn-sign-in {
-            width: 100%; 
-            background: #ffffff; 
+            width: 100%;
+            background: #ffffff;
             color: #000;
-            padding: 20px; 
-            border: none; 
+            padding: 20px;
+            border: none;
             border-radius: 16px;
-            font-weight: 800; 
-            font-size: 1.1rem; 
+            font-weight: 800;
+            font-size: 1.1rem;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -148,16 +148,16 @@
             box-shadow: 0 20px 40px rgba(0, 242, 255, 0.3);
         }
 
-        .footer-link { 
-            margin-top: 35px; 
-            font-size: 1rem; 
-            color: var(--text-dim); 
+        .footer-link {
+            margin-top: 35px;
+            font-size: 1rem;
+            color: var(--text-dim);
         }
-        .footer-link a { 
-            color: white; 
-            text-decoration: underline; 
+        .footer-link a {
+            color: white;
+            text-decoration: underline;
             text-underline-offset: 4px;
-            font-weight: 800; 
+            font-weight: 800;
         }
 
         /* Mouse Glow */
@@ -191,7 +191,7 @@
 
             <div class="options-row">
                 <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                    <input type="checkbox" style="accent-color: var(--accent-primary); width: 18px; height: 18px;"> 
+                    <input type="checkbox" style="accent-color: var(--accent-primary); width: 18px; height: 18px;">
                     Remember me
                 </label>
                 <a href="#" class="forgot-link">Forgot Password?</a>
@@ -200,8 +200,12 @@
             <button type="submit" class="btn-sign-in">Authenticate</button>
         </form>
 
-        <p class="footer-link">New to the network? <a href="#">Join Zenith</a></p>
+        <p class="footer-text">
+    New to the network?
+    <a href="{{ url_for('register') }}">Join Zenith</a>
+    </p>
     </div>
+    <!-- Inside login.html -->
 
     <script>
         const field = document.getElementById('field');

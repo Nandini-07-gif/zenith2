@@ -13,8 +13,8 @@
             --bg: #030303;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
-            --accent: #6366f1; /* Indigo glow */
-            --accent-2: #a855f7; /* Purple glow */
+            --accent: #6366f1; 
+            --accent-2: #a855f7; 
         }
 
         body {
@@ -62,7 +62,6 @@
             margin-bottom: 40px;
         }
 
-        /* Form Styling */
         .form-label {
             font-size: 0.75rem;
             font-weight: 700;
@@ -90,7 +89,6 @@
             outline: none;
         }
 
-        /* Submit Button */
         .btn-register {
             width: 100%;
             padding: 15px;
@@ -122,12 +120,25 @@
             font-weight: 700;
         }
 
-        /* Remove default select arrow for a cleaner look */
-        select {
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 20px center;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+            border-radius: 12px !important;
+            padding: 12px 20px !important;
+            cursor: pointer;
+        }
+
+        select option {
+            background-color: #1a1a1a;
+            color: white;
         }
     </style>
 </head>
@@ -137,7 +148,8 @@
         <span class="brand-logo">ZENITH</span>
         <p class="subtitle">Join thousands of scholars building the future.</p>
 
-        <form action="{{ url_for('register') }}" method="POST">
+        <!-- Added ID to form -->
+        <form action="{{ url_for('register') }}" method="POST" id="registrationForm">
             <div class="row g-3 mb-4">
                 <div class="col-md-12">
                     <label class="form-label">Full Name</label>
@@ -146,28 +158,31 @@
                 
                 <div class="col-md-12">
                     <label class="form-label">College Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="scholar@university.edu" required>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="scholar@university.edu" required>
                 </div>
 
-                <div class="col-md-12">
-                    <label class="form-label">University / Institution</label>
-                    <select name="university" class="form-select" required>
-                        <option value="" disabled selected>Select your campus</option>
-                        <option value="GLA">GLA University</option>
-                        <option value="IIT">IIT Kanpur</option>
-                        <option value="AMU">AMU</option>
-                        <option value="Other">Other Global Institution</option>
-                    </select>
+                <div class="mb-4 text-start">
+                    <label class="form-label small fw-bold text-uppercase" style="color: #94a3b8; letter-spacing: 1px;">
+                        University / Institution
+                    </label>
+                    <div class="custom-select-wrapper">
+                        <select class="form-control" id="university" name="university" required>
+                            <option value="" disabled selected>Select your campus</option>
+                            <option value="GLA University">GLA University</option>
+                            <option value="IIT KANPUR">IIT KANPUR</option>
+                            <option value="Other">Other Institution</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Confirm Password</label>
-                    <input type="password" name="confirm_password" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="••••••••" required>
                 </div>
             </div>
 
@@ -185,6 +200,40 @@
             Already a member? <a href="{{ url_for('login') }}">Sign In</a>
         </div>
     </div>
+
+    <!-- VALIDATION SCRIPT -->
+    <script>
+        document.getElementById('registrationForm').onsubmit = function(e) {
+            const email = document.getElementById('email').value;
+            const university = document.getElementById('university').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            // 1. Password Match Validation
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                e.preventDefault(); // Stop form submission
+                return false;
+            }
+
+            // 2. Email Domain Validation
+            if (university === "GLA University") {
+                if (!email.endsWith("@gla.ac.in")) {
+                    alert("Please use your GLA University email (@gla.ac.in)");
+                    e.preventDefault();
+                    return false;
+                }
+            } else if (university === "IIT KANPUR") {
+                if (!email.endsWith("@kp.ac.in")) {
+                    alert("Please use your IIT Kanpur email (@kp.ac.in)");
+                    e.preventDefault();
+                    return false;
+                }
+            }
+            
+            return true;
+        };
+    </script>
 
 </body>
 </html>

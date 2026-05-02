@@ -278,159 +278,36 @@ input:focus {
         font-size: 3rem;
     }
 }
-/* --- Core 3D Setup --- */
-:root {
-    --primary-glow: rgba(0, 242, 255, 0.3);
-    --accent-glow: rgba(123, 97, 255, 0.3);
-}
-
-body {
-    background-color: #050505 !important;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    perspective: 1200px; /* Essential for 3D depth */
-    overflow-x: hidden;
-}
-
-/* --- Dynamic Glass Cards (3D Animated) --- */
-.glass-card {
-    background: rgba(20, 20, 20, 0.4) !important;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    border-radius: 24px !important;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    transform-style: preserve-3d;
-    position: relative;
-}
-
-/* Hover: Card Lifts and Tilts */
-.glass-card:hover {
-    transform: translateZ(20px) rotateX(4deg) rotateY(-2deg);
-    background: rgba(30, 30, 30, 0.6) !important;
-    border-color: rgba(123, 97, 255, 0.4) !important;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 
-                0 0 20px var(--accent-glow);
-}
-
-/* Content inside card gets extra depth */
-.glass-card h2, .glass-card .icon-box {
-    transform: translateZ(30px); /* Pops out more than the card */
-}
-
-/* --- Sidebar Styling --- */
-.sidebar {
-    height: 100vh;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
-    background: linear-gradient(180deg, #080808 0%, #000 100%);
-}
-
-.nav-link {
-    color: #666 !important;
-    border-radius: 12px;
-    padding: 12px 20px !important;
-    transition: 0.3s;
-}
-
-.nav-link.active, .nav-link:hover {
-    color: #fff !important;
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateX(5px);
-}
-
-/* --- Text & Animation Details --- */
-.gradient-text {
-    background: linear-gradient(135deg, #00f2ff 0%, #7b61ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: glow-pulse 3s infinite ease-in-out;
-}
-
-@keyframes glow-pulse {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.3) drop-shadow(0 0 10px rgba(0, 242, 255, 0.4)); }
-}
-
-.stat-pill {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 6px 16px;
-    border-radius: 100px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-/* Collaboration Row Hover */
-.collaboration-list .glass-card:hover {
-    padding-left: 30px !important; /* Smooth slide effect */
-    border-left: 4px solid #7b61ff !important;
-}
-
-/* Floating Background Blur (For extra 3D feel) */
-body::before {
-    content: '';
-    position: fixed;
-    top: 20%; left: 10%;
-    width: 300px; height: 300px;
-    background: var(--accent-glow);
-    filter: blur(150px);
-    border-radius: 50%;
-    z-index: -1;
-    animation: drift 15s infinite alternate;
-}
-
-@keyframes drift {
-    from { transform: translate(0, 0); }
-    to { transform: translate(100px, 50px); }
-}
-
-/* --- Floating Background Icons --- */
-.bg-watermark-1, .bg-watermark-2 {
-    position: fixed;
-    width: 80px;
-    height: 80px;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.12;
+/* Styling the Select Box */
+select {
+    width: 100%;
+    padding: 12px;
+    background-color: #1a1a1a; /* Matches your input field color */
+    color: #ffffff;
+    border: 1px solid #333;
+    border-radius: 8px;
+    font-size: 14px;
+    appearance: none; /* Removes the default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a855f7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
-    background-size: contain;
-    /* Smooth floating animation */
-    animation: floating-icons 25s infinite ease-in-out;
+    background-position: right 1rem center;
+    background-size: 1em;
+    transition: all 0.3s ease;
 }
 
-.bg-watermark-1 {
-    top: 15%;
-    left: 15%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f2ff' stroke-width='1'%3E%3Cpath d='M12 2l9 5v10l-9 5-9-5V7l9-5z'/%3E%3C/svg%3E");
-    animation-duration: 20s;
+/* Purple Glow on Focus */
+select:focus {
+    outline: none;
+    border-color: #a855f7;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
 }
 
-.bg-watermark-2 {
-    bottom: 15%;
-    right: 10%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237b61ff' stroke-width='1'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M2 12h20'/%3E%3C/svg%3E");
-    animation-delay: -5s; /* Taaki dono ek saath move na karein */
-    animation-duration: 28s;
-}
-
-/* --- The Magic Floating Keyframes --- */
-@keyframes floating-icons {
-    0% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-    }
-    33% {
-        transform: translate(40px, -50px) rotate(15deg) scale(1.1);
-    }
-    66% {
-        transform: translate(-20px, 30px) rotate(-10deg) scale(0.9);
-    }
-    100% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-    }
-}
-
-/* Cards ke peeche se glow effect (Optional but looks 3D) */
-.glass-card:hover ~ .bg-watermark-1, 
-.glass-card:hover ~ .bg-watermark-2 {
-    opacity: 0.25;
-    filter: drop-shadow(0 0 15px currentColor);
-    transition: all 0.8s ease;
+/* Styling the list options */
+select option {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 10px;
 }
