@@ -9,6 +9,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
+        /* --- Slim & Dynamic Floating Icons --- */
+.bg-watermark {
+    position: fixed;
+    width: 50px;  /* Chota size */
+    height: 50px;
+    z-index: 0;   /* Sidebar ke peeche par background ke upar */
+    pointer-events: none;
+    opacity: 0.3; /* Balanced visibility */
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: opacity 0.5s ease;
+}
+
+/* Slim SVG Icons (Stroke-width: 1 for elegance) */
+.icon-1 {
+    top: 15%; left: 20%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f2ff' stroke-width='1'%3E%3Cpath d='M12 2l9 5v10l-9 5-9-5V7l9-5z'/%3E%3C/svg%3E");
+    animation: float-v1 20s infinite ease-in-out;
+}
+
+.icon-2 {
+    bottom: 20%; right: 10%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237b61ff' stroke-width='1'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/%3E%3C/svg%3E");
+    animation: float-v2 25s infinite ease-in-out;
+}
+
+.icon-3 {
+    top: 60%; left: 15%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff2d55' stroke-width='1'%3E%3Cpath d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/%3E%3C/svg%3E");
+    animation: float-v3 22s infinite ease-in-out;
+}
+
+.icon-4 {
+    top: 10%; right: 15%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f2ff' stroke-width='1'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'/%3E%3C/svg%3E");
+    animation: float-v1 18s infinite ease-in-out reverse;
+}
+
+/* --- Varied Floating Animations --- */
+@keyframes float-v1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(40px, -60px) rotate(20deg); }
+}
+
+@keyframes float-v2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-50px, 30px) rotate(-15deg); }
+}
+
+@keyframes float-v3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, 30px) scale(1.2); }
+}
         :root {
             --bg: #020202;
             --glass: rgba(255, 255, 255, 0.03);
@@ -205,6 +258,16 @@
             </div>
         </main>
     </div>
-
+<!-- Floating Watermarks -->
+    <div class="bg-watermark icon-1"></div>
+    <div class="bg-watermark icon-2"></div>
+    <div class="bg-watermark icon-3"></div>
+    <div class="bg-watermark icon-4"></div>
+<script>
+    document.querySelectorAll('.world-card').forEach(card => {
+    card.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
+    card.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
+});
+</script>
 </body>
 </html>

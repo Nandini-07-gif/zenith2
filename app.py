@@ -230,6 +230,51 @@ def propose_project_page():
 @app.route('/index.html')
 def home():
     return render_template('index.html')
+@app.route('/overview')
+def overview():
+    stats = {"network_size": 14, "active_missions": 3, "collaboration_aura": "98%"}
+    
+    # Platform Access Steps
+    steps = [
+        {"id": "01", "title": "Neural Entry", "desc": "Login or Register to create your unique student profile."},
+        {"id": "02", "title": "Explore Worlds", "desc": "Access AI-driven project worlds and collaborative environments."},
+        {"id": "03", "title": "Assemble Squad", "desc": "Connect with collaborators and manage tasks in the Archives."}
+    ]
+    
+    return render_template('overview.html', stats=stats, steps=steps)
+
+@app.route('/messages')
+def messages():
+    # Ye data list aapke database se bhi aa sakti hai
+    # Filhal hum ise dynamic mock data ke taur par use kar rahe hain
+    notifications_list = [
+        {
+            "type": "join_request",
+            "sender": "Aryan Sharma",
+            "content": "wants to join your squad as an AI/ML Researcher.",
+            "time": "2m ago",
+            "match": "94%",
+            "project": "Neural Net"
+        },
+        {
+            "type": "mission_update",
+            "sender": "System",
+            "content": "Mission 'Database Schema' has been successfully initialized.",
+            "time": "1h ago",
+            "match": "82%",
+            "project": "Campus Connect"
+        },
+        {
+            "type": "announcement",
+            "sender": "Zenith AI",
+            "content": "New interest-based teams are forming in your domain. Check your dashboard.",
+            "time": "5h ago",
+            "match": "100%",
+            "project": "Network Hub"
+        }
+    ]
+    
+    return render_template('messages.html', notifications=notifications_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
