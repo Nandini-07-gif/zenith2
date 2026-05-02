@@ -55,7 +55,9 @@
             <div class="col-md-4">
                 <div class="glass-card p-4">
                     <small class="text-secondary uppercase">Collaborators</small>
-                    <h2 class="display-5 fw-bold">8</h2>
+                    <!-- Replace the static '8' with this dynamic session call -->
+<!-- Change line 58 in dashboard.html -->
+<h2 class="display-5 fw-bold">{{ session.get('network_size', 14) }}</h2>
                     <p class="text-secondary small mb-0">Across 2 worlds</p>
                 </div>
             </div>

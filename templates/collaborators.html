@@ -228,12 +228,22 @@
     <div class="main-content">
         <header>
             <h1>Zenith Network</h1>
+            {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert-success" style="background: #00ffcc22; color: #00ffcc; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #00ffcc;">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
             <p class="subtitle">Assemble your squad. Build the future of GLA.</p>
         </header>
 
         <div class="stats-row">
             <div class="stat-card">
-                <div class="stat-value">{{ total_collaborators }}</div>
+                <!-- Line 236 in collaborators.html -->
+<div class="stat-value">{{ session.get('network_size', 14) }}</div>
                 <div class="stat-label">Network Size</div>
             </div>
             <div class="stat-card">
@@ -249,20 +259,30 @@
         <section>
             <h2>Neural Matches</h2>
             <div class="user-grid">
-                {% for suggestion in suggestions %}
-                <div class="user-card">
-                    <div class="match-tag">{{ suggestion.match }} Match</div>
-                    <h3>{{ suggestion.name }}</h3>
-                    <p class="headline">{{ suggestion.headline }}</p>
-                    <div class="skills">
-                        {% for skill in suggestion.skills %}
+    {% for suggestion in suggestions %}
+        {# 1. Check if user is NOT connected #}
+        {% if suggestion.name not in session.get('connected_users', []) %}
+            <div class="user-card">
+                <!-- THE MISSING DETAILS START HERE -->
+                <div class="match-tag">{{ suggestion.match }} Match</div>
+                <h3>{{ suggestion.name }}</h3>
+                <p class="headline">{{ suggestion.headline }}</p>
+                
+                <div class="skills">
+                    {% for skill in suggestion.skills %}
                         <span class="skill-pill">{{ skill }}</span>
-                        {% endfor %}
-                    </div>
-                    <button class="btn-connect">Initialize Connection</button>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+                <!-- THE MISSING DETAILS END HERE -->
+                
+                <a href="{{ url_for('initialize_connection', name=suggestion.name) }}" class="btn-initialize">
+                    Initialize Connection
+                </a>
             </div>
+        {% endif %}
+    {% endfor %}
+</div>
+              
         </section>
     </div>
 
