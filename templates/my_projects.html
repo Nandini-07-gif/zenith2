@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith | My Projects</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #6366f1;
+            --accent-2: #a855f7;
+        }
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            padding: 60px 5%;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .project-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 25px;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.05);
+        }
+        .world-badge {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .xp-badge {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid #fbbf24;
+            color: #fbbf24;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .progress-track {
+            height: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            border-radius: 10px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 100px 20px;
+            color: #475569;
+        }
+        .flash-msg {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--accent);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+        .btn-new {
+            background: linear-gradient(45deg, var(--accent), var(--accent-2));
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .btn-new:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99,102,241,0.3);
+            color: white;
+        }
+        .btn-outline {
+            background: transparent;
+            color: #64748b;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .btn-outline:hover {
+            color: white;
+            border-color: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 900px; margin: 0 auto;">
+
+        <div class="d-flex justify-content-between align-items-start mb-5">
+            <div>
+                <h1 class="fw-800 mb-1"><span class="gradient-text">My Projects</span></h1>
+                <p class="text-secondary mb-0">Initiatives launched by {{ author }}</p>
+            </div>
+            <div class="d-flex gap-3 mt-2">
+                <a href="/propose_project" class="btn-new">+ New Project</a>
+                <a href="/dashboard" class="btn-outline">Dashboard</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash-msg">🚀 {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if projects %}
+            {% for project in projects %}
+            <div class="project-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <div class="d-flex gap-2 mb-2">
+                            <span class="world-badge">{{ project.world }}</span>
+                            <span class="xp-badge">+{{ project.xp }} XP</span>
+                        </div>
+                        <h3 class="fw-bold mb-1">{{ project.title }}</h3>
+                        <p class="text-secondary mb-0" style="font-size: 0.95rem;">{{ project.desc }}</p>
+                    </div>
+                    <div class="text-end ms-3">
+                        <div class="small text-secondary">Vacancies</div>
+                        <div class="fw-bold" style="font-size: 1.5rem;">{{ project.vacancies }}</div>
+                    </div>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: {{ project.progress }}%;"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <small class="text-secondary">Progress</small>
+                    <small class="text-secondary fw-bold">{{ project.progress }}%</small>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div style="font-size: 4rem;">🚀</div>
+                <h3 class="mt-3 fw-bold">No Projects Yet</h3>
+                <p class="text-secondary">You haven't launched any initiatives yet. Start one now.</p>
+                <a href="/propose_project" class="btn-new mt-3 d-inline-block">Launch First Project</a>
+            </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>

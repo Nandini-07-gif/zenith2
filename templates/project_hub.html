@@ -6,7 +6,6 @@
     <title>Zenith | {{ world_name }} Hub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --bg: #050505;
@@ -16,7 +15,6 @@
             --accent-glow: rgba(99, 102, 241, 0.3);
             --success: #22c55e;
         }
-
         body {
             background-color: var(--bg);
             color: #fff;
@@ -24,8 +22,6 @@
             background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 40%);
             min-height: 100vh;
         }
-
-        /* --- LAYOUT --- */
         .hub-layout {
             display: grid;
             grid-template-columns: 1fr 380px;
@@ -34,21 +30,6 @@
             margin: 0 auto;
             padding: 60px 20px;
         }
-
-        /* --- ANIMATIONS --- */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 5px var(--accent-glow); }
-            50% { box-shadow: 0 0 25px var(--accent-glow); }
-            100% { box-shadow: 0 0 5px var(--accent-glow); }
-        }
-
-        /* --- PROJECT CARDS --- */
         .project-card {
             background: var(--glass);
             border: 1px solid var(--border);
@@ -57,17 +38,12 @@
             margin-bottom: 25px;
             backdrop-filter: blur(12px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
         }
-
         .project-card:hover {
             transform: scale(1.02) translateY(-5px);
             border-color: var(--accent);
             background: rgba(255, 255, 255, 0.06);
-            animation: pulse-glow 3s infinite;
         }
-
         .vacancy-badge {
             background: rgba(34, 197, 94, 0.1);
             color: var(--success);
@@ -79,7 +55,6 @@
             align-items: center;
             gap: 6px;
         }
-
         .pulse-dot {
             height: 6px;
             width: 6px;
@@ -87,13 +62,10 @@
             border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
-
         @keyframes pulse {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(3); opacity: 0; }
         }
-
-        /* --- SIDEBAR & BUTTONS --- */
         .sidebar-panel {
             background: var(--glass);
             border: 1px solid var(--border);
@@ -102,10 +74,9 @@
             position: sticky;
             top: 40px;
         }
-
         .propose-btn {
             background: linear-gradient(135deg, #6366f1, #a855f7);
-            color: black;
+            color: white;
             border: none;
             padding: 20px;
             border-radius: 20px;
@@ -115,42 +86,56 @@
             letter-spacing: 1px;
             box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
             transition: 0.3s;
+            text-decoration: none;
+            display: block;
+            text-align: center;
         }
-
         .propose-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
-            filter: brightness(1.1);
+            color: white;
         }
-
         .progress-bar-custom {
             height: 6px;
             background: var(--border);
             border-radius: 10px;
             margin-top: 8px;
         }
-
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--accent), #a855f7);
             border-radius: 10px;
-            transition: width 1s ease-in-out;
         }
-
         .text-gradient {
             background: linear-gradient(to right, #fff, #6366f1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
+        .view-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .view-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
     </style>
 </head>
 <body>
-
     <div class="hub-layout">
         <main>
             <header class="mb-5">
-                <nav class="small text-uppercase tracking-widest text-secondary mb-2">Network / Ecosystem</nav>
+                <nav class="small text-uppercase tracking-widest text-secondary mb-2">
+                    <a href="/worlds" style="color: #64748b; text-decoration: none;">Worlds</a> / {{ world_name }}
+                </nav>
                 <h1 class="display-4 fw-800 text-gradient">{{ world_name }} Hub</h1>
                 <p class="text-secondary lead">Deploying high-impact collaborative initiatives.</p>
             </header>
@@ -165,7 +150,7 @@
                 <div class="col-4">
                     <div class="p-4 bg-white bg-opacity-5 rounded-4 border border-secondary border-opacity-25 text-center">
                         <div class="small text-secondary mb-1">Open Roles</div>
-                        <div class="h2 fw-800 mb-0 text-success">18+</div>
+                        <div class="h2 fw-800 mb-0 text-success">{{ projects|sum(attribute='vacancies') }}+</div>
                     </div>
                 </div>
                 <div class="col-4">
@@ -200,7 +185,8 @@
 
                     <div class="d-flex align-items-center justify-content-between pt-3 border-top border-secondary border-opacity-10">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="avatar bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: 800;">
+                            <div class="avatar bg-primary rounded-circle d-flex align-items-center justify-content-center"
+                                 style="width: 40px; height: 40px; font-weight: 800;">
                                 {{ project.lead[0] }}
                             </div>
                             <div>
@@ -208,7 +194,9 @@
                                 <div class="text-muted small">{{ project.email }}</div>
                             </div>
                         </div>
-                        <button class="btn btn-sm btn-outline-light rounded-pill px-4">View Specs</button>
+                        <a href="/project_overview/{{ world_id }}/{{ project.name }}" class="view-btn">
+                            View Specs →
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
@@ -217,17 +205,16 @@
 
         <aside>
             <div class="sidebar-panel">
-                <div class="mb-5">
+                <div class="mb-4">
                     <h4 class="fw-800 mb-3">World Insights</h4>
-                    <p class="text-secondary small">This niche is currently trending. We recommend joining projects with >50% completion for immediate impact.</p>
+                    <p class="text-secondary small">This niche is currently trending. Join projects with >50% completion for immediate impact.</p>
                 </div>
 
-                <!-- Inside your World Insights card -->
-<a href="/propose_project" class="propose-btn" style="text-decoration: none;">
-    🚀 Propose New Project
-</a>
+                <a href="/propose_project" class="propose-btn mb-4">
+                    🚀 Propose New Project
+                </a>
 
-                <div class="quick-stats">
+                <div class="mt-4">
                     <h6 class="small fw-bold text-secondary text-uppercase mb-3">Network Status</h6>
                     <div class="d-flex justify-content-between small mb-2">
                         <span>Engagement</span>
@@ -237,10 +224,17 @@
                         <span>Peer Review</span>
                         <span class="text-success">Active</span>
                     </div>
+                    <div class="d-flex justify-content-between small">
+                        <span>Open Roles</span>
+                        <span class="text-warning">{{ projects|sum(attribute='vacancies') }} slots</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-top border-secondary border-opacity-25">
+                    <a href="/worlds" class="text-secondary small text-decoration-none">← Back to Worlds</a>
                 </div>
             </div>
         </aside>
     </div>
-
 </body>
 </html>

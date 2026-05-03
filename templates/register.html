@@ -144,10 +144,18 @@
 </head>
 <body>
 
-    <div class="register-card">
-        <span class="brand-logo">ZENITH</span>
-        <p class="subtitle">Join thousands of scholars building the future.</p>
-
+<div class="register-card">
+    <span class="brand-logo">ZENITH</span>
+    <p class="subtitle">Join thousands of scholars building the future.</p>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div style="background: rgba(255,0,0,0.1); border: 1px solid #f87171; color: #f87171; padding: 12px 20px; border-radius: 12px; margin-bottom: 20px; font-size: 0.9rem; text-align: center;">
+                    ⚠️ {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
         <!-- Added ID to form -->
         <form action="{{ url_for('register') }}" method="POST" id="registrationForm">
             <div class="row g-3 mb-4">
